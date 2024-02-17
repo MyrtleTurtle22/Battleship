@@ -1,6 +1,6 @@
 public class Ship {
-    private int length;
-    private String name;
+    private final int length;
+    private final String name;
 
     public Ship(int length, String name) {
         this.length = length;

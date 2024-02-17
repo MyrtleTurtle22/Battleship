@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 public class Player {
-    private String name;
+    private final String name;
     private char[][] shipBoard;
     private char[][] attackBoard;
 
