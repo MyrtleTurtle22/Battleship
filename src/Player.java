@@ -2,8 +2,14 @@ import java.util.Arrays;
 
 public class Player {
     private final String name;
-    private char[][] shipBoard;
-    private char[][] attackBoard;
+    private final char[][] shipBoard;
+    private final char[][] attackBoard;
+    Ship bship;
+    Ship ac;
+    Ship sub;
+    Ship cru;
+    Ship des;
+    int shipsSunk = 0;
 
     public Player(String name) {
         this.name = name;
@@ -11,6 +17,12 @@ public class Player {
         attackBoard = new char[10][10];
         initializeArrays(shipBoard);
         initializeArrays(attackBoard);
+
+        bship = new Ship(5, "Battleship");
+        ac = new Ship(4, "Aircraft Carrier");
+        sub = new Ship(3, "Submarine");
+        cru = new Ship(3, "Cruiser");
+        des = new Ship(2, "Destroyer");
     }
 
     private void initializeArrays(char[][] board) {
@@ -31,11 +43,11 @@ public class Player {
         return attackBoard;
     }
 
-    public void setShipBoard(char[][] shipBoard) {
-        this.shipBoard = shipBoard;
+    public int getShipsSunk() {
+        return shipsSunk;
     }
 
-    public void setAttackBoard(char[][] attackBoard) {
-        this.attackBoard = attackBoard;
+    public void setShipsSunk(int sunk) {
+        shipsSunk = sunk;
     }
 }
