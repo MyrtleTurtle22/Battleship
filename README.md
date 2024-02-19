@@ -1,6 +1,8 @@
 # Battleship
 console-based 2 player battleship
 
+created by Curtis Decker
+
 ## HOW TO RUN:
 Compile and run Main.java to start the game.
 
@@ -10,16 +12,16 @@ Compile and run Main.java to start the game.
 Be the first to sink all 5 of your opponent's ships.
 
 ### SHIPS:
-Battleship - Size 5
-Aircraft Carrier - Size 4
-Cruiser - Size 3
-Submarine - Size 3
+Battleship - Size 5\
+Aircraft Carrier - Size 4\
+Cruiser - Size 3\
+Submarine - Size 3\
 Destroyer - Size 2
 
 ### PREPARE FOR BATTLE:
 You and your opponent each place your 5 ships on the grid.  
-Ships must be placed horizontally or vertically, not diagonally.
-A ship cannot be placed where any part of it overlaps letters, numbers, the edge of the grid or another ship.
+Ships must be placed horizontally or vertically, not diagonally.\
+A ship cannot be placed where any part of it overlaps letters, numbers, the edge of the grid or another ship.\
 Ships cannot change position once the game begins.
 
 ### BATTLE:
@@ -39,5 +41,5 @@ Play continues in this manner, with you and your opponent calling one shot per t
 ### SINKING A SHIP:
 Once each grid position on a ship has been hit, it has been sunk.  The game will announce which ship was sunk.  
 
-WINNING THE GAME:
+### WINNING THE GAME:
 If you're the first player to sink your opponent's entire fleet of 5 ships, you win the game!
