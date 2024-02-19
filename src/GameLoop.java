@@ -48,7 +48,9 @@ public class GameLoop {
 
         while (!gameOver) {
             attack(p1, p2);
+            TimeUnit.SECONDS.sleep(2);
             attack(p2, p1);
+            TimeUnit.SECONDS.sleep(2);
         }
     }
 
@@ -57,15 +59,52 @@ public class GameLoop {
         int col = 0;
         char orientation = 'D';
         boolean valid = false;
+        String input;
         while (!valid) { //user either has not yet entered coordinates or entered incorrect coordinates
-            System.out.println("Enter the row number followed by the column number of the top left position" +
-                    " of your " + ship.getName() + " separated by a space:");
-            row = s.nextInt();
-            col = s.nextInt();
+            while (true) {
+                System.out.println("Enter the row number followed by the column number of the top left position" +
+                        " of your " + ship.getName() + " separated by a space:");
+                if (s.hasNextInt()) {
+                    row = s.nextInt();
+                    if (row <= 10 && row >= 1) {
+                        if (s.hasNextInt()) {
+                            col = s.nextInt();
+                            if (col <= 10 && col >= 1) {
+                                break;
+                            } else {
+                                System.out.println("Column number must be between 1 and 10.");
+                            }
+                        } else {
+                            System.out.println("Invalid input.  Please enter numbers between 1 and 10 separated by a space.");
+                            s.nextLine();
+                        }
+                    } else {
+                        System.out.println("Row number must be between 1 and 10.");
+                        s.nextLine();
+                    }
+                } else {
+                    System.out.println("Invalid input.  Please enter numbers between 1 and 10 separated by a space.");
+                    s.nextLine();
+                }
+            }
             s.nextLine();
 
-            System.out.println("Enter either 'D' or 'R' if you want the ship to face right or down");
-            orientation = s.next().charAt(0);
+            while (true) {
+                System.out.println("Enter either 'D' or 'R' if you want the ship to face right or down");
+                input = s.nextLine().toUpperCase();
+
+                if (input.equals("D")) {
+                    orientation = 'D';
+                    break;
+                }
+                else if (input.equals("R")) {
+                    orientation = 'R';
+                    break;
+                }
+                else {
+                    System.out.println("Invalid input. Please enter either 'D' or 'R' if you want the ship to face right or down");
+                }
+            }
             valid = validateCoordinates(p, ship, row, col, orientation);
         }
         //change each ship position to 'X'
@@ -129,16 +168,42 @@ public class GameLoop {
 
     }
 
-    private void attack(Player attacker, Player defender) {
+    private void attack(Player attacker, Player defender) throws InterruptedException {
         boolean valid = false;
         int row = 0;
         int col = 0;
         printBoard(attacker.getAttackBoard());
         while (!valid) {
-            System.out.println(attacker.getName() + ", enter the row number followed by the column number" +
-                    " of the target you wish to attack");
-            row = s.nextInt() - 1;
-            col = s.nextInt() - 1;
+            while (true) {
+                System.out.println(attacker.getName() + ", enter the row number followed by the column number" +
+                        " of the target you wish to attack");
+                if (s.hasNextInt()) {
+                    row = s.nextInt() - 1;
+                    if (row <= 9 && row >= 0) {
+                        if (s.hasNextInt()) {
+                            col = s.nextInt() - 1;
+                            if (col <= 9 && col >= 0) {
+                                break;
+                            }
+                            else {
+                                System.out.println("Column must be between 1 and 10.");
+                            }
+                        }
+                        else {
+                            System.out.println("Invalid input. Please enter numbers between 1 and 10 separated by a space.");
+                            s.nextLine();
+                        }
+                    }
+                    else {
+                        System.out.println("Row must be between 1 and 10.");
+                        s.nextLine();
+                    }
+                }
+                else {
+                    System.out.println("Invalid input. Please enter numbers between 1 and 10 separated by a space.");
+                    s.nextLine();
+                }
+            }
             if (attacker.getAttackBoard()[row][col] == '_') {
                 valid = true;
             } else {
@@ -148,8 +213,7 @@ public class GameLoop {
 
         if (defender.getShipBoard()[row][col] != '_') { //hit
             attacker.getAttackBoard()[row][col] = 'X'; // update attacker board
-            //check if sink ship
-            System.out.println(defender.getShipBoard()[row][col]);
+            //check which ship is hit and if it is sunk
             switch (defender.getShipBoard()[row][col]) {
                 case 'B':
                     System.out.println("Hit! Battleship!");
@@ -158,6 +222,7 @@ public class GameLoop {
                         attacker.setShipsSunk(attacker.getShipsSunk() + 1);
                         System.out.println(attacker.getName() + " has sunk " + defender.getName() + "'s Battleship!");
                     }
+                    break;
                 case 'A':
                     System.out.println("Hit! Aircraft Carrier!");
                     defender.ac.setTimesHit(defender.ac.getTimesHit() + 1);
@@ -165,6 +230,7 @@ public class GameLoop {
                         attacker.setShipsSunk(attacker.getShipsSunk() + 1);
                         System.out.println(attacker.getName() + " has sunk " + defender.getName() + "'s Aircraft Carrier!");
                     }
+                    break;
                 case 'C':
                     System.out.println("Hit! Cruiser!");
                     defender.cru.setTimesHit(defender.cru.getTimesHit() + 1);
@@ -172,6 +238,7 @@ public class GameLoop {
                         attacker.setShipsSunk(attacker.getShipsSunk() + 1);
                         System.out.println(attacker.getName() + " has sunk " + defender.getName() + "'s Cruiser!");
                     }
+                    break;
                 case 'D':
                     System.out.println("Hit! Destroyer!");
                     defender.des.setTimesHit(defender.des.getTimesHit() + 1);
@@ -179,6 +246,7 @@ public class GameLoop {
                         attacker.setShipsSunk(attacker.getShipsSunk() + 1);
                         System.out.println(attacker.getName() + " has sunk " + defender.getName() + "'s Destroyer!");
                     }
+                    break;
                 case 'S':
                     System.out.println("Hit! Submarine!");
                     defender.sub.setTimesHit(defender.sub.getTimesHit() + 1);
@@ -186,12 +254,14 @@ public class GameLoop {
                         attacker.setShipsSunk(attacker.getShipsSunk() + 1);
                         System.out.println(attacker.getName() + " has sunk " + defender.getName() + "'s Submarine!");
                     }
+                    break;
             }
             // check if win
             if (attacker.getShipsSunk() == 5) {
                 System.out.println(attacker.getName() + " has sunk all of " + defender.getName() + "'s ships!");
-                System.out.println("GAME OVER");
+                System.out.println("GAME OVER - " + attacker.getName() + " WINS!!!");
                 gameOver = true;
+                TimeUnit.SECONDS.sleep(3);
                 System.exit(0);
             }
         } else {
